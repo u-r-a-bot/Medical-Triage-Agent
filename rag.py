@@ -42,13 +42,14 @@ def build_vector_store():
 def get_retriever():
     """Loads the FAISS vector store and returns a retriever."""
     if not os.path.exists(VECTOR_STORE_PATH):
-        raise FileNotFoundError("Vector store not found. Please run build_vector_store() first.")
+        print("Vector store not found. Building it now...")
+        build_vector_store()
     
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-    db = FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True) # The flag is needed for FAISS
+    db = FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True)
     
-    # Return a retriever that finds the top 4 most relevant documents
-    return db.as_retriever(search_kwargs={"k": 4})
+    # Return a retriever that finds the top 3 most relevant documents
+    return db.as_retriever(search_kwargs={"k": 3})
 
 if __name__ == '__main__':
     # This allows you to build the store by running `python rag.py`

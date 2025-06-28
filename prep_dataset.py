@@ -1,70 +1,35 @@
 import pandas as pd
 import os
-import re
 
-# The new, correct filename
-CSV_FILE = "Training.csv"
-OUTPUT_DIR = "knowledge_base"
-
-def create_knowledge_base_from_csv():
-    """Reads the Kaggle Training.csv and creates a text file for each disease."""
-    
-    if not os.path.exists(CSV_FILE):
-        print(f"Error: The dataset file '{CSV_FILE}' was not found.")
-        print("Please download it from https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning, and place 'Training.csv' in the project root.")
+def create_knowledge_base():
+    if not os.path.exists('Training.csv'):
+        print("Training.csv not found. Please download the dataset first.")
         return
-
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
     
-    print(f"Cleaning old files from '{OUTPUT_DIR}'...")
-    for filename in os.listdir(OUTPUT_DIR):
-        os.remove(os.path.join(OUTPUT_DIR, filename))
-
-    print(f"Loading dataset from '{CSV_FILE}'...")
-    df = pd.read_csv(CSV_FILE)
-
-    # The last column 'prognosis' is our target disease
-    disease_col = 'prognosis'
+    df = pd.read_csv('Training.csv')
     
-    # Get a list of all unique diseases
-    diseases = df[disease_col].unique()
+    if not os.path.exists('knowledge_base'):
+        os.makedirs('knowledge_base')
     
-    # Get a list of all symptom columns (all columns except the last one)
-    # The dataset might have a trailing empty column, so we check for 'Unnamed'
-    symptom_cols = [col for col in df.columns if col != disease_col and 'Unnamed' not in col]
-
-    print(f"Found {len(diseases)} diseases and {len(symptom_cols)} symptoms.")
-
-    # Process each unique disease
-    for disease in diseases:
-        # Create a clean filename like 'fungal_infection.txt'
-        filename_disease = re.sub(r'[^a-z0-9_]', '', disease.lower().replace(' ', '_'))
-        file_path = os.path.join(OUTPUT_DIR, f"{filename_disease}.txt")
-
-        # Find the first row for this disease to get its symptoms
-        disease_rows = df[df[disease_col] == disease]
-        if disease_rows.empty:
-            continue
+    for index, row in df.iterrows():
+        disease = row['prognosis']
+        symptoms = row.drop('prognosis').to_dict()
         
-        # Take the first profile for that disease
-        disease_profile = disease_rows.iloc[0]
-
-        # Find all symptoms that are marked with '1' for this disease profile
-        present_symptoms = [
-            col.replace('_', ' ') for col in symptom_cols if disease_profile[col] == 1
-        ]
+        filename = f"knowledge_base/{disease.lower().replace(' ', '_')}.txt"
         
-        # Assemble the content for the text file
-        content = f"Information about: {disease}\n\n"
-        content += "Key Symptoms:\n"
-        for symp in present_symptoms:
-            content += f"- {symp.strip()}\n"
-        
-        # Write the file
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-
-    print(f"Successfully created {len(diseases)} knowledge files in the '{OUTPUT_DIR}' directory.")
+        with open(filename, 'w') as f:
+            f.write(f"Information about: {disease}\n\n")
+            f.write("Key Symptoms:\n")
+            
+            for symptom, value in symptoms.items():
+                if value == 1:
+                    f.write(f"- {symptom}\n")
+            
+            f.write(f"\nDisease: {disease}\n")
+            f.write("This is a medical condition that may require professional diagnosis and treatment.\n")
+            f.write("Please consult with a healthcare provider for proper medical advice.\n")
+    
+    print(f"Knowledge base created with {len(df)} disease files.")
 
 if __name__ == "__main__":
-    create_knowledge_base_from_csv()
+    create_knowledge_base()

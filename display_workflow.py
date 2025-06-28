@@ -1,24 +1,15 @@
-#!/usr/bin/env python3
-"""
-Display the LangGraph workflow structure for the medical triage system.
-"""
-
 from langgraph_workflow import create_triage_workflow
 
 def display_workflow_structure():
-    """Display the workflow structure in a readable format."""
-    
     print("🏥 Medical Triage Agent - LangGraph Workflow Structure")
     print("=" * 60)
     
-    # Create the workflow
     workflow = create_triage_workflow()
     graph = workflow.get_graph()
     
     print("\n📋 Workflow Nodes:")
     print("-" * 30)
     
-    # Display nodes
     nodes = list(graph.nodes.keys())
     for i, node in enumerate(nodes, 1):
         print(f"{i}. {node}")
