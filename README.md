@@ -92,6 +92,3 @@ python langgraph_workflow.py  # Creates triage_workflow.png
 - **FAISS**: Vector database
 - **Google Gemini**: LLM provider
 
-## License
-
-MIT License 
