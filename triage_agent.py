@@ -95,14 +95,14 @@ def extract_patient_info(messages: List[Any]) -> Dict[str, Any]:
     
     return patient_info
 
-def doctor_agent_ask_question(messages: List[Any]) -> str:
-    """Doctor agent that asks intelligent follow-up questions based on conversation context."""
+def conversation_agent_ask_question(messages: List[Any]) -> str:
+    """Conversation agent that asks intelligent follow-up questions based on conversation context."""
     
     # Get conversation context
     conversation_text = " ".join([msg.content for msg in messages if hasattr(msg, 'content')])
     
-    # Create a system prompt for the doctor agent
-    system_prompt = """You are a caring and professional doctor conducting a patient consultation. Your role is to ask natural, conversational follow-up questions to understand the patient's condition better.
+    # Create a system prompt for the conversation agent
+    system_prompt = """You are a caring and professional medical assistant conducting a patient consultation. Your role is to ask natural, conversational follow-up questions to understand the patient's condition better.
 
 Guidelines:
 - Be empathetic and professional
@@ -266,8 +266,8 @@ def process_doctor_conversation(user_input: str, conversation_history: Optional[
     
     # Check if conversation should continue
     if should_continue_conversation(conversation_history):
-        # Doctor agent asks next question
-        next_question = doctor_agent_ask_question(conversation_history)
+        # Conversation agent asks next question
+        next_question = conversation_agent_ask_question(conversation_history)
         conversation_history.append(AIMessage(content=next_question))
         
         return {

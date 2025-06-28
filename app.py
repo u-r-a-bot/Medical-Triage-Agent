@@ -134,7 +134,7 @@ def main():
                 st.session_state.messages.append(HumanMessage(content=prompt))
                 
                 # Process the conversation
-                with st.spinner("🤔 Doctor is thinking..."):
+                with st.spinner("🤔 AI is analyzing your response..."):
                     try:
                         result = process_doctor_conversation(
                             user_input=prompt,
