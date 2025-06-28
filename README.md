@@ -2,10 +2,6 @@
 
 AI-powered medical triage system using LangGraph multi-agent workflow with RAG capabilities.
 
-## Acknowledgments
-
-Special thanks to [Disease Prediction Using Machine Learning](https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning) dataset on Kaggle for helping generate the training dataset used in this project.
-
 ## Features
 
 - 🤖 **AI Symptom Analysis**: Identifies and categorizes patient symptoms
@@ -95,4 +91,8 @@ python langgraph_workflow.py  # Creates triage_workflow.png
 - **Streamlit**: Web interface
 - **FAISS**: Vector database
 - **Google Gemini**: LLM provider
+
+## Acknowledgments
+
+Used this [dataset](https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning) for making symptoms dataset.
 
